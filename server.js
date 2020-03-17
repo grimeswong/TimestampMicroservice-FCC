@@ -42,8 +42,8 @@ app.get("/api/timestamp/:date_string?", function (req, res) {
     res.json({unix: convertedData.getTime(), utc: convertedData.toUTCString()});
   } else { // condition: this is string of date 2020-03-13
       const date = new Date (dateString);
-      console.log(date);
-      date ==='Invalid Date' ? res.json({error: date})
+      console.log(date.toUTCString());
+      date.toUTCString() ==='Invalid Date' ? res.json({error: date.toUTCString()})
       : res.json({unix: date.getTime(), utc: date.toUTCString()});
   }
 
