@@ -24,7 +24,30 @@ app.get("/api/hello", function (req, res) {
   res.json({greeting: 'hello API'});
 });
 
+/* Timestamp */
+// Format {"unix": 1479663089000 ,"utc": "Sun, 20 Nov 2016 17:31:29 GMT"}
+app.get("/api/timestamp/", function (req, res) {
+  const dateString = req.params.date_string;
+    const date = new Date();  // get the current date/time
+    res.json({unix: date.getTime(), utc: date.toUTCString()});  // checked: correct
+});
 
+app.get("/api/timestamp/:date_string?", function (req, res) {
+  // todo: regex for all digits or valid 2020-03-13 format
+  // recognise those two format and change to correct UTC format accordingly
+  const dateString = req.params.date_string;
+  if(/\d{5,}/.test(dateString)) {
+    console.log(dateString);
+    convertedData = new Date(parseInt(dateString)); // convert string to Integer
+    res.json({unix: convertedData.getTime(), utc: convertedData.toUTCString()});
+  } else { // condition: this is string of date 2020-03-13
+      const date = new Date (dateString);
+      console.log(date);
+      date ==='Invalid Date' ? res.json({error: date})
+      : res.json({unix: date.getTime(), utc: date.toUTCString()});
+  }
+
+})
 
 // listen for requests :)
 var listener = app.listen(process.env.PORT || 8080, function () {
